@@ -1,0 +1,11 @@
+# campaign_p3_16_str04.txt -- Paper 3, submission 2 of 2: set 2 at Oh = 0.02. Written 2026-11-22.
+#
+# Submit only after the low-Oh pair of campaign_p3_16.txt (str04oh002_16 and its twin) has been analyzed and its plotfiles deleted (see run_instructions, Paper 3), so that the two 4-step pairs are never on disk together: about 29 to 37 GB for this pair (2104 plotfiles per run plus the initial one, at 7 to 9 MB each).
+#
+# Copy this file to $LSA on the cluster, then:
+#   scripts/estimate_cost.sh campaign_p3_16_str04.txt 16
+#   CHECK_INT=500 WALLTIME=12:00:00 scripts/submit_hpc_array.sh campaign_p3_16_str04.txt 16
+#
+# Columns as in campaign_p3_16.txt. The column of campaign_16.txt (sw070_16, Oh = 0.02, k r0 = 0.7, eps = 0.04 dr), stored every M = 4 steps instead of 52: below the aliasing limit M < sqrt(2)/C = 5.66 of Eq. (alias), and every 13th plotfile reproduces sw070_16's interval exactly. The snapshot count is chosen so that make_inputs sets amr.plot_int = 4 (checked: 8416 steps, 2104 plotfiles).
+str04_16          0.7   2.5e-3 16   4.0   4.3   2093  --eps-cells 0.04
+str04_16.base     0.7   0      16   4.0   4.3   2093

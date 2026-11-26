@@ -1,0 +1,8 @@
+collected      2026-11-24 00:26:30 EST on h22-login-24.rcc.fsu.edu
+from           $HOME/amrex_implicit_interfaces/NS_fluids_lib/LSA_Rayleigh_Fortran/runs
+analysis code  57dbc8d 2026-10-23 Field-direction linearity test on three meshes (band-2 level set), results folder 2026-10-23_linearity_fields
+solver commit  dddb827c
+files          1733
+size           118M
+
+Large files left on the cluster are listed in SKIPPED.txt.

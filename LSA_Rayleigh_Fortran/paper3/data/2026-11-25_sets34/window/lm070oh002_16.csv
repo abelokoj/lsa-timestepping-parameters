@@ -1,0 +1,2 @@
+record,kr0,t_lo,t_hi,n,rate,one_minus_r2,efolds,settled,bounded,visc_exact,inviscid,visc_two_fluid
+runs/records/lm070oh002_16.dat,  0.7000,  2.01900909E+00,  1.07939332E+01,114,  3.41926045E-01,  1.6025E-07,  3.0004,T,T,  3.41862672E-01,  3.43326801E-01,  3.41648129E-01

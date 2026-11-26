@@ -1,0 +1,146 @@
+diff --git a/NS_fluids_lib/NavierStokes.H b/NS_fluids_lib/NavierStokes.H
+index 54847fa..564c737 100644
+--- a/NS_fluids_lib/NavierStokes.H
++++ b/NS_fluids_lib/NavierStokes.H
+@@ -2260,6 +2260,10 @@ protected:
+     static Real projection_velocity_scale;
+ 
+     static Real LSA_velocity_scale;
++    // LSA_levelset_scale: level-set amplitude of each rescaled member, in finest cells (default 2.0, the former hard-coded value).
++    static Real LSA_levelset_scale;
++    // LSA_fix_restart, bits: 1 keep the level set outside the band, 2 carry the pressure, 4 one scalar factor per member (default 0; 1 and 2 need 4).
++    static int LSA_fix_restart;
+     static Real LSA_temperature_scale;
+ 
+     static Vector<Real> vorterr; // 0 to disable
+diff --git a/NS_fluids_lib/NavierStokes.cpp b/NS_fluids_lib/NavierStokes.cpp
+index b53b70c..5975e8b 100644
+--- a/NS_fluids_lib/NavierStokes.cpp
++++ b/NS_fluids_lib/NavierStokes.cpp
+@@ -559,6 +559,8 @@ Real NavierStokes::projection_pressure_scale=1.0;
+ Real NavierStokes::projection_velocity_scale=1.0;
+ 
+ Real NavierStokes::LSA_velocity_scale=0.1;
++Real NavierStokes::LSA_levelset_scale=2.0;
++int NavierStokes::LSA_fix_restart=0;
+ Real NavierStokes::LSA_temperature_scale=0.1;
+ 
+ int NavierStokes::num_elements_blobclass=-32767;
+@@ -5111,6 +5113,16 @@ NavierStokes::read_params ()
+     }
+ 
+     pp.queryAdd("LSA_velocity_scale",LSA_velocity_scale);
++    pp.queryAdd("LSA_levelset_scale",LSA_levelset_scale);
++    if (LSA_levelset_scale>0.0) {
++     //do nothing
++    } else
++     amrex::Error("LSA_levelset_scale invalid");
++    pp.queryAdd("LSA_fix_restart",LSA_fix_restart);
++    if ((LSA_fix_restart==0)||((LSA_fix_restart>=4)&&(LSA_fix_restart<=7))) {
++     //do nothing
++    } else
++     amrex::Error("LSA_fix_restart invalid");
+     pp.queryAdd("LSA_temperature_scale",LSA_temperature_scale);
+ 
+     projection_pressure_scale=1.0;
+@@ -6499,6 +6511,8 @@ NavierStokes::read_params ()
+ 
+      std::cout << "LSA_velocity_scale " << 
+        LSA_velocity_scale << '\n';
++     std::cout << "LSA_levelset_scale " << LSA_levelset_scale << '\n';
++     std::cout << "LSA_fix_restart " << LSA_fix_restart << '\n';
+ 
+       //in AMReX_MemPool.cpp and AMReX_FArrayBox.cpp: 
+       // ParmParse pp("fab");
+@@ -11702,6 +11716,8 @@ void NavierStokes::LSA_eigenvector(
+    S_extra_comp.minus(S_unperturb_extra_comp,scomp_loop,1,0);
+   } else if (is_temperature==1) {
+    S_extra_comp.minus(S_unperturb_extra_comp,scomp_loop,1,0);
++  } else if ((LSA_fix_restart&2)&&(scomp_loop==STATECOMP_PRES)) {
++   S_extra_comp.minus(S_unperturb_extra_comp,scomp_loop,1,0);
+   } else
+    S_extra_comp.setVal(0.0,scomp_loop,1,0);
+ 
+@@ -11811,7 +11827,7 @@ void NavierStokes::LSA_normalize_eigenvector(
+     im*num_state_material+ENUM_TEMPERATUREVAR]=1.0;
+  } //im=0 .. nmat-1
+  for (int im=0;im<num_materials;im++) {
+-  LS_scale_parm[im]=2.0*dx_finest[0];
++  LS_scale_parm[im]=LSA_levelset_scale*dx_finest[0];
+  }
+ 
+  if (1==1) {
+@@ -11848,7 +11864,14 @@ void NavierStokes::LSA_normalize_eigenvector(
+   for (int scomp_loop=0;scomp_loop<num_materials;scomp_loop++) {
+ 
+    Real local_max=0.0;
+-   LSA_levelset_norminf(scomp_loop,unperturb_extra_comp,extra_comp,local_max);
++   if (LSA_fix_restart&1) {
++    MultiFab LS_keep(grids,dmap,1,0,
++      MFInfo().SetTag("LS_keep"),FArrayBoxFactory());
++    MultiFab::Copy(LS_keep,LS_extra_comp,scomp_loop,0,1,0);
++    LSA_levelset_norminf(scomp_loop,unperturb_extra_comp,extra_comp,local_max);
++    MultiFab::Copy(LS_extra_comp,LS_keep,0,scomp_loop,1,0);
++   } else
++    LSA_levelset_norminf(scomp_loop,unperturb_extra_comp,extra_comp,local_max);
+ 
+    if (1==1) {
+     std::cout << "scomp_loop= " << scomp_loop << " local_max= " <<
+@@ -11858,6 +11881,43 @@ void NavierStokes::LSA_normalize_eigenvector(
+ 
+   } //scomp_loop=0;scomp_loop<num_materials
+ 
++  //isweep==1, LSA_fix_restart&4: one scalar factor for velocity, pressure,
++  //temperature and level set, so that the stored members stay a Krylov
++  //sequence up to one known factor each (printed as LSA_scalar_factor).
++ } else if ((isweep==1)&&(LSA_fix_restart&4)) {
++
++  Real LS_max_all=0.0;
++  for (int im=0;im<num_materials;im++)
++   LS_max_all=max(LS_max_all,LS_cell_max[im]);
++  Real c_scalar=0.0;
++  if (LS_max_all>LS_scale_parm[0]*1.0e-10)
++   c_scalar=LS_scale_parm[0]/LS_max_all;
++
++  for (int scomp_loop=0;scomp_loop<S_extra_comp.nComp();scomp_loop++) {
++   int is_temperature=0;
++   for (int im=0;im<num_materials;im++) {
++    if (scomp_loop==STATECOMP_STATES+im*num_state_material+ENUM_TEMPERATUREVAR)
++     is_temperature=1;
++   }
++   if ((scomp_loop>=0)&&(scomp_loop<AMREX_SPACEDIM)) {
++    S_extra_comp.mult(c_scalar,scomp_loop,1);
++   } else if (is_temperature==1) {
++    S_extra_comp.mult(c_scalar,scomp_loop,1);
++   } else if (scomp_loop==STATECOMP_PRES) {
++    if (caller_id==FROM_default_eigenvectorALL) {
++     //the start vector carries no pressure perturbation
++     S_extra_comp.setVal(0.0,scomp_loop,1,0);
++    } else
++     S_extra_comp.mult(c_scalar,scomp_loop,1);
++   }
++  }
++  LS_extra_comp.mult(c_scalar,0,num_materials);
++
++  if ((level==0)&&(ParallelDescriptor::IOProcessor())) {
++   printf("LSA_scalar_factor %d %.17e\n",parent->LSA_current_step,c_scalar);
++   std::fflush(NULL);
++  }
++
+  } else if (isweep==1) {
+ 
+   for (int scomp_loop=0;scomp_loop<S_extra_comp.nComp();scomp_loop++) {
+@@ -13492,6 +13552,13 @@ void NavierStokes::add_perturbation(int null_perturbation) {
+  
+   MultiFab::Add(LS_new,*LS_diff,0,0,num_materials,0);
+ 
++  if ((LSA_fix_restart&2)&&(null_perturbation==0)) {
++   MultiFab& S_extra_pres=
++     get_new_data(State_Type,ns_time_order+LSA_EVEC_EXTRA+1);
++   MultiFab::Add(S_new,S_extra_pres,STATECOMP_PRES,STATECOMP_PRES,
++     STATE_NCOMP_PRES,0);
++  }
++
+   init_boundary(
+     local_control_flag,
+     local_extra_comp,

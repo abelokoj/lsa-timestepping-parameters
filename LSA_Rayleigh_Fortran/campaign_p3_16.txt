@@ -1,0 +1,26 @@
+# campaign_p3_16.txt -- new solver runs for Paper 3 (practical guidance), 16 cells per radius: submission 1 of 2. Written 2026-11-21, split 2026-11-22.
+#
+# Columns: label kr0 eps cells_per_r0 rmax n_periods snapshots [make_inputs options], as in campaign_16.txt; a label ending in .base is the unperturbed twin, and every case has its own twin because the decks differ in viscosity or output interval. Twins and perturbed runs must be in the same array submission, so that they run on the same rank count and build.
+#
+# Copy this file to $LSA on the cluster, then:
+#   scripts/estimate_cost.sh campaign_p3_16.txt 16
+#   CHECK_INT=500 WALLTIME=12:00:00 scripts/submit_hpc_array.sh campaign_p3_16.txt 16
+#
+# Every case is the column of campaign_16.txt (sw070_16): k r0 = 0.7, eps = 0.04 dr = 2.5e-3, wall at 4 R0, n_periods 4.3. Planned with make_inputs (2026-11-21): grid 64x144, dt = 1.553e-3 at C = 1/4 of the capillary limit, 8050 to 8416 steps per run. By the cost model of estimate_cost.sh: about 18 core-hours and 2 h of wall time per run on 16 ranks; the model has underestimated before, hence the 12 h request.
+#
+# Disk. Nothing in run_all.sh deletes plotfiles (it prunes checkpoints only), so every plotfile stays until removed. The October inventory gives 1.8 MB per plotfile at 32x72 (meas08: 162 plotfiles, 296 MB; eps005: 64, 115 MB) and 9 to 11 MB at 64x144 including checkpoints (meas16: 164, 1.5 GB; pinch16: 245, 2.7 GB), so 7 to 9 MB per plotfile here. The dissertation runs wrote 121 to 245 plotfiles each; the 4-step runs of set 2 write about 2,100 each. Set 2 is therefore split: this file holds set 1 (4 runs, about 4 to 6 GB) and the low-Oh pair of set 2 (about 28 to 36 GB), where aliasing is most likely to matter; campaign_p3_16_str04.txt holds the Oh = 0.02 pair (about 29 to 37 GB), submitted after this pair has been analyzed and its plotfiles deleted. Peak use is then about 32 to 41 GB instead of 61 to 78 GB.
+#
+# Set 1. Low Ohnesorge numbers (Paper 3, run plan item 1): does aliasing of weakly damped capillary waves reach the leading rate? Oh = mu_l in these units; the gas viscosity is scaled with it, mu_g / mu_l = 0.013 as in the campaign at Oh = 0.02, so that only Oh changes. Output every 50 steps or so (snapshots 160), as in the campaign. Compare with run_lsa theory --kr0 0.7 --mu-l 0.002 --mu-g 2.6e-5 (and 0.005, 6.5e-5).
+oh002_16          0.7   2.5e-3 16   4.0   4.3   160   --eps-cells 0.04 --mu-l 0.002 --mu-g 2.6e-5
+oh002_16.base     0.7   0      16   4.0   4.3   160   --mu-l 0.002 --mu-g 2.6e-5
+oh005_16          0.7   2.5e-3 16   4.0   4.3   160   --eps-cells 0.04 --mu-l 0.005 --mu-g 6.5e-5
+oh005_16.base     0.7   0      16   4.0   4.3   160   --mu-l 0.005 --mu-g 6.5e-5
+#
+# Set 2, low-Oh pair. A sampling interval below the aliasing limit (run plan item 2). Eq. (alias) of Paper 3 requires M < sqrt(2)/C = 5.66 steps at C = 1/4; M = 6, as first planned, is just above it, so the fields are stored every M = 4 steps, which also reproduces the dissertation's 52-step interval exactly (every 13th plotfile); every 31st and 32nd (124 and 128 steps) bracket 126. The snapshot count is chosen so that make_inputs sets amr.plot_int = 4 (checked: 8096 steps, 2024 plotfiles).
+str04oh002_16     0.7   2.5e-3 16   4.0   4.3   2012  --eps-cells 0.04 --mu-l 0.002 --mu-g 2.6e-5
+str04oh002_16.base 0.7  0      16   4.0   4.3   2012  --mu-l 0.002 --mu-g 2.6e-5
+#
+# Not in this file:
+# Set 2, Oh = 0.02 pair: campaign_p3_16_str04.txt (submission 2).
+# Set 3 (initial condition from the leading mode at k r0 = 0.9 and 0.95) needs a start from a stored mode shape, which make_inputs and the input template do not provide; it needs a solver or template change first.
+# Set 4 (restarting variant with the three fixes) needs the level-set and pressure fixes in the solver; only the mode-selection fix has been tested, offline, in krylov_test/upstream_fixes/.

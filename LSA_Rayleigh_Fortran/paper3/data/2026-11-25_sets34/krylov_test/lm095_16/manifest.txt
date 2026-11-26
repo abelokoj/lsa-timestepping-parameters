@@ -1,0 +1,8 @@
+--- 2026-11-24 09:36:19 krylov_fix.sh
+label = lm095_16  kr0 = 0.95  cells = 16  rmax = 4.0  nper = 5.2  snaps = 200  extra = 
+members = 60  M = 175  tau = 0.2506175  fix = 7  ls_scale = 0.04  skip = 20  continue = 1
+solver = $HOME/aii_fix/NS_fluids_lib/amr2d.gnu.MPI.ex  md5 = fb488757fcc90d60ad71bfeba6276878  commit = dddb827c
+--- 2026-11-25 01:28:18 krylov_fix.sh
+label = lm095_16  kr0 = 0.95  cells = 16  rmax = 4.0  nper = 5.2  snaps = 200  extra = 
+members = 60  M = 175  tau = 0.2506175  fix = 7  ls_scale = 0.04  skip = 20  continue = 1
+solver = $HOME/aii_fix/NS_fluids_lib/amr2d.gnu.MPI.ex  md5 = fb488757fcc90d60ad71bfeba6276878  commit = dddb827c

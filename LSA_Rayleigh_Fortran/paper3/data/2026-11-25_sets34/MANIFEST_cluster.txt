@@ -1,0 +1,8 @@
+collected      2026-11-25 11:55:20 EST on h22-login-24.rcc.fsu.edu
+from           $HOME/amrex_implicit_interfaces/NS_fluids_lib/LSA_Rayleigh_Fortran/runs
+analysis code  ecdf56a 2026-11-24 run_studies.sh: pass each case's fluid properties (props_of, as in analyse_campaign.sh) so err_vs_exact uses its own Ohnesorge number
+solver commit  dddb827c
+files          1889
+size           128M
+
+Large files left on the cluster are listed in SKIPPED.txt.

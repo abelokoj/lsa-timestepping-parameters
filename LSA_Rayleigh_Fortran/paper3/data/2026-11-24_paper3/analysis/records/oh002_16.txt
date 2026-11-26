@@ -1,0 +1,18 @@
+record: runs/records/oh002_16.dat
+  samples 162   t =     0.0000 ..    12.5023
+  amplitude bound a/r0 <=  0.100   (not reached)
+  window t =     8.8526 ..    12.5023  (48 samples,   1.25 e-folds)
+  growth rate s =   0.341260   1 - r^2 =  2.748E-07
+  viscous exact  =   0.341863   (  -0.176 %)
+  inviscid       =   0.343327   (  -0.602 %)
+  two-fluid visc =   0.341648   (  -0.113 %)
+
+  start-time sensitivity (upper end fixed):
+     t_start          rate   samples     1 - r^2
+      6.6783      0.340351        76   4.473E-06
+      7.6878      0.340889        63   1.293E-06
+      8.6973      0.341223        50   3.380E-07
+      9.6291      0.341408        38   1.232E-07
+     10.6386      0.341558        25   9.744E-08
+  spread  1.208E-03  (  0.354 % of the rate)
+  wrote runs/analysis/records/oh002_16.csv

@@ -1,0 +1,4 @@
+--- 2026-11-24 09:36:19 krylov_fix.sh
+label = kfx6_070_16  kr0 = 0.7  cells = 16  rmax = 4.0  nper = 4.3  snaps = 160  extra = 
+members = 40  M = 161  tau = 0.25004588  fix = 6  ls_scale = 0.04  skip = 20  continue = 0
+solver = $HOME/aii_fix/NS_fluids_lib/amr2d.gnu.MPI.ex  md5 = fb488757fcc90d60ad71bfeba6276878  commit = dddb827c

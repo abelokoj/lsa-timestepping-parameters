@@ -1,0 +1,56 @@
+subspace (from export): 18432 dof x 20 snapshots, dt= 2.50047E-01  $HOME/amrex_implicit_interfaces/NS_fluids_lib/LSA_Rayleigh_Fortran/krylov_test/analysis/kfx5_070_16/export_vel
+
+rank scan 4 .. 16
+  rank   4  rate 0.321021  residual  4.360E-04
+  rank   5  rate 0.321033  residual  4.078E-04
+  rank   6  rate 0.321361  residual  2.951E-04
+  rank   7  rate 0.321464  residual  1.353E-04
+  rank   8  rate 0.321457  residual  1.064E-04
+  rank   9  rate 0.321490  residual  7.589E-05
+  rank  10  rate 0.321513  residual  4.277E-05
+  rank  11  rate 0.321497  residual  3.337E-05
+  rank  12  rate 0.321524  residual  1.858E-05
+  rank  13  rate 0.321517  residual  1.332E-05
+  rank  14  rate 0.321473  residual  7.660E-06
+  rank  15  rate 0.321537  residual  4.234E-06
+  rank  16  rate 0.321554  residual  3.464E-06
+  median rate   0.321490   IQR  5.917E-05   (13 of 13 ranks gave a rate)
+  median vs viscous exact   -2.392 %
+reduced-map residual  1.451E-06  (||Y - U S~ U^T X|| / ||Y||; small means a linear sequence)
+DMD archive written to $HOME/amrex_implicit_interfaces/NS_fluids_lib/LSA_Rayleigh_Fortran/krylov_test/analysis/kfx5_070_16/dmd_vel
+
+
+Decomposition: rank 19, dt 2.500E-01, 19 modes
+mode  growth sigma  freq Im(w)/2pi  |lambda|  amplitude
+-------------------------------------------------------
+   0      0.321556        0.000000  1.083725  2.152E-01
+   1     -0.497574       -0.000000  0.883012  8.582E-03
+   2     -0.180729        0.356932  0.955815  1.194E-03
+   3     -0.180729       -0.356932  0.955815  1.194E-03
+   4     -0.389395       -0.094349  0.907223  1.193E-03
+   5     -0.389395        0.094349  0.907223  1.193E-03
+   6     -0.477929        0.899845  0.887360  3.793E-04
+   7     -0.477929       -0.899845  0.887360  3.793E-04
+   8    -10.395504       -1.999628  0.074321  3.735E-04
+   9     -0.531877        0.604241  0.875470  1.509E-04
+-------------------------------------------------------
+
+
+Rayleigh-Plateau growth rate at k r0 = 0.7000
+quantity                       growth rate  note                                      
+--------------------------------------------------------------------------------------
+DMD: leading stationary mode      0.321556                                            
+log-norm slope fit                0.324593  r^2 = 0.99999                             
+viscous exact (Chandrasekhar)     0.329367  theory, benchmark                         
+viscous approx (Weber)            0.328941  theory                                    
+exact inviscid (Rayleigh)         0.343327  theory                                    
+two-fluid inviscid                0.343283  theory, rho_g = 1.225E-03                 
+two-fluid viscous (Tomotika)      0.328689  theory, rho_g, mu_g = 1.225E-03, 2.600E-04
+--------------------------------------------------------------------------------------
+comparison                     departure  verdict   
+----------------------------------------------------
+measured vs viscous exact        -2.37 %            
+measured vs inviscid             -6.34 %            
+measured vs two-fluid viscous    -2.17 %            
+DMD vs norm fit                   0.94 %  consistent
+----------------------------------------------------

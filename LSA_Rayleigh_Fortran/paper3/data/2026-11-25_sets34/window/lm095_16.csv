@@ -1,0 +1,2 @@
+record,kr0,t_lo,t_hi,n,rate,one_minus_r2,efolds,settled,bounded,visc_exact,inviscid,visc_two_fluid
+runs/records/lm095_16.dat,  0.9500,  1.98088041E+01,  2.07024344E+01,7,  1.81259846E-01,  3.1494E-06,  0.1620,T,T,  1.75493930E-01,  1.99198053E-01,  1.74895587E-01

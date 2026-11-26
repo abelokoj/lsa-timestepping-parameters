@@ -1,0 +1,57 @@
+subspace (from export): 18432 dof x 47 snapshots, dt= 7.76542E-02  runs/analysis/oh002_16/export
+
+rank scan 4 .. 16
+  rank   4  rate 0.348048  residual  5.947E-03
+  rank   5  rate 0.345314  residual  4.473E-03
+  rank   6  rate 0.346771  residual  3.422E-03
+  rank   7  rate 0.346790  residual  2.877E-03
+  rank   8  rate 0.346036  residual  2.495E-03
+  rank   9  rate 0.345806  residual  2.189E-03
+  rank  10  rate 0.347082  residual  2.013E-03
+  rank  11  rate 0.346613  residual  1.859E-03
+  rank  12  rate 0.344902  residual  1.745E-03
+  rank  13  rate 0.341633  residual  1.642E-03
+  rank  14  rate 0.347328  residual  1.556E-03
+  rank  15  rate 0.346945  residual  1.519E-03
+  rank  16  rate 0.341163  residual  1.437E-03
+  median rate   0.346613   IQR  1.631E-03   (13 of 13 ranks gave a rate)
+  median vs viscous exact    5.236 %
+reduced-map residual  8.611E-04  (||Y - U S~ U^T X|| / ||Y||; small means a linear sequence)
+DMD archive written to runs/analysis/oh002_16/dmd
+
+
+Decomposition: rank 46, dt 7.765E-02, 46 modes
+mode  growth sigma  freq Im(w)/2pi  |lambda|  amplitude
+-------------------------------------------------------
+   0      0.348644       -0.000000  1.027444  7.882E-01
+   1      0.442656        0.027846  1.034972  1.845E-01
+   2      0.442656       -0.027846  1.034972  1.845E-01
+   3      0.863631        0.302863  1.069365  3.488E-03
+   4      0.863631       -0.302863  1.069365  3.488E-03
+   5      0.999155        0.622089  1.080678  7.598E-04
+   6      0.999155       -0.622089  1.080678  7.598E-04
+   7     -4.975224        1.092859  0.679535  4.410E-04
+   8     -4.975224       -1.092859  0.679535  4.410E-04
+   9      1.246119       -0.933299  1.101603  2.329E-04
+-------------------------------------------------------
+
+
+Rayleigh-Plateau growth rate at k r0 = 0.7000
+quantity                       growth rate  note                                      
+--------------------------------------------------------------------------------------
+DMD: leading stationary mode      0.348644                                            
+log-norm slope fit                0.342342  r^2 = 1.00000                             
+viscous exact (Chandrasekhar)     0.329367  theory, benchmark                         
+viscous approx (Weber)            0.328941  theory                                    
+exact inviscid (Rayleigh)         0.343327  theory                                    
+two-fluid inviscid                0.343283  theory, rho_g = 1.225E-03                 
+two-fluid viscous (Tomotika)      0.328689  theory, rho_g, mu_g = 1.225E-03, 2.600E-04
+--------------------------------------------------------------------------------------
+comparison                     departure  verdict   
+----------------------------------------------------
+measured vs viscous exact         5.85 %            
+measured vs inviscid              1.55 %            
+measured vs two-fluid viscous     6.07 %            
+DMD vs norm fit                   1.81 %  consistent
+----------------------------------------------------
+wrote runs/analysis/oh002_16/dmd.json

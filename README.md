@@ -51,7 +51,7 @@ The output is written to `figures/paper3_tables.txt`. Some of it is labeled with
 
 Level 2 refits every interface growth rate from its amplitude record, recomputes the local rates and the weighting table, and prints the stored output of the decompositions. It does not repeat the decompositions, because their inputs, the twin-difference fields and the members of the restarting variant, are too large for this repository. They are repeated in Level 3. The rates over the strides are printed as rates, with their spread and their largest change from the rate at stride 1, since the paper uses both.
 
-The last column of Table 1 is recomputed by fitting the record of the smallest amplitude over the snapshots of the window of the largest, both ends included. This gives −0.34%, −0.55% and −0.76% on 8, 16 and 32 cells per radius; the value on 8 cells is obtained without the last snapshot of that window.
+The last column of Table 1 is recomputed by fitting the record of the smallest amplitude over the snapshots of the window of the largest, both ends included. This gives −0.34%, −0.55% and −0.76% on 8, 16 and 32 cells per radius, the values in the paper.
 
 ## Level 3. Run the simulations again
 

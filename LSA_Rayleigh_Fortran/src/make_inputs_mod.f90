@@ -45,7 +45,7 @@ contains
 
    !> Capillary time-step bound of the solver, dt_3 = sqrt((rho_l + rho_g) dx^3 / (2 pi sigma)), as in Ye et al. (2024) and dissertation eq:3_ye. The solver multiplies it by its CFL factor of 1/2; the deck instead fixes ns.fixed_dt = safety * dt_3 with safety = 0.25 by default, i.e. half of what the solver itself would take, because the perturbation being measured is tiny and temporal error must not compete with it.
    !>
-   !> Note on the constant. The review of 2026-10-06 suggested this might be a factor sqrt(2) looser than Brackbill et al. (1992), whose limit uses the mean density (rho_l + rho_g)/2. That is so, but the bound that matters here is the solver's own, and this expression matches it exactly (see the dissertation, section on the capillary time step, which states the two conventions and the factor between them). It is therefore unchanged.
+   !> Note on the constant. The review of 2026-10-06 suggested this might be a factor sqrt(2) looser than Brackbill et al. (1992), whose limit uses the mean density (rho_l + rho_g)/2. That is so, but the relevant bound is that of the solver, and this expression is identical to that bound (see the dissertation, section on the capillary time step, which states the two conventions and the factor between them). It is therefore unchanged.
    pure function capillary_dt(dx, sigma, rho_l, rho_g) result(dt)
       real(dp), intent(in) :: dx, sigma, rho_l, rho_g
       real(dp) :: dt

@@ -2,7 +2,7 @@
 !>
 !> `dump_amplitude` writes the amplitude record, which carries the growth curve and the local growth rate. Two further figures need more: the interface figure needs the radius profile r(z) at several instants, and the field figure needs a plotfile variable on the (r,z) plane with the interface laid over it. This program extracts both and writes them in the portable format defined in bundle_mod, so that every figure of a case can afterwards be drawn from a few hundred kilobytes of text rather than from the plotfiles.
 !>
-!> The separation matters because the plotfiles usually stay where the calculation ran. A sweep leaves tens of gigabytes on a cluster that carries no matplotlib, so the figures are drawn on a workstation; moving the plotfiles there is impractical, while moving a bundle is a single copy. Running this program once, on the machine holding the plotfiles, is what makes that possible, and `scripts/run_all.sh` invokes it for every case.
+!> The extraction and the plotting are kept apart because the plotfiles usually remain on the cluster where the calculation was run. A sweep leaves tens of gigabytes on a cluster that carries no matplotlib, so the figures are drawn on a workstation; moving the plotfiles there is impractical, while moving a bundle is a single copy. Running this program once, on the machine holding the plotfiles, is what makes that possible, and `scripts/run_all.sh` invokes it for every case.
 !>
 !> Profiles are exported for every snapshot, since the file remains small. Field slices are exported only at the requested number of instants, spread evenly across the record, because a slice is far larger than a profile and only a few panels are ever drawn.
 !>

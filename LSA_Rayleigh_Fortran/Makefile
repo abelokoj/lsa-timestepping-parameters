@@ -29,8 +29,7 @@ BUILD := build
 BIN   := bin
 MODS  := $(BUILD)/mods
 
-# Module compilation order matters in Fortran: a module must be compiled
-# before anything that USEs it.
+# The modules are listed in the order in which they are compiled: in Fortran a module must be compiled before anything that USEs it.
 LIB_SRC := \
 	$(SRC)/util_mod.f90 \
 	$(SRC)/table_mod.f90 \

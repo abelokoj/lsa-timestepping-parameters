@@ -19,7 +19,7 @@ We obtain the same cancellation without a body force by running an unperturbed *
 
 Both runs experience the same base-state drift, so the difference removes it to machine precision, and Q' obeys the linearised dynamics to O(eps^2) exactly as in their Eq. (7)-(8).  This is the same "subtract the base flow from the total flow" step drawn in their Fig. 1; the drift that B_f exists to cancel is here cancelled by a computed twin rather than by a stored forcing term.  The cost is one extra base-state march, which is cheap relative to the perturbed sweep, and the benefit is that no C++/Fortran modification of the solver is required.
 
-Two consequences worth stating explicitly, because they matter for the thesis:
+Two consequences of this are important for the thesis:
 
 1. This is valid only if the twin and perturbed runs are bitwise-reproducibly
 discretised - same grid, same fixed_dt, same AMR behaviour, same MPI decomposition.  Use `ns.fixed_dt`, `amr.max_level=0` (or a frozen regrid schedule) and an identical processor count for both runs. `check_run_compatibility` enforces the metadata part of this.

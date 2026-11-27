@@ -2,7 +2,7 @@
 
 The sweep writes one record per case, holding time, interface mode amplitude and mean radius. This reads those records and reports, for each case, the fitted growth rate over a window, the coefficient of determination, the drift of the mean radius, and the departure from the inviscid and viscous predictions. It reads plain text only, so it runs on a login node or a workstation without the plotfiles and without yt.
 
-The window matters more than anything else in this file. A fit over the whole record includes the startup transient and returns a substantial underestimate, so the default excludes the first half of the linear part of the record (transient.DEFAULT_KEEP, shared with every other script that fits a rate) and the value of t_min actually used is reported alongside every rate. Where a record is short, as in the amplitude sweep, the fraction retained is the same but the absolute window is shorter. When no sound window exists the fallback taken is printed beneath the table rather than applied silently.
+Of all the choices in this file, the fitting window has the largest effect on the rate. A fit over the whole record includes the startup transient and returns a substantial underestimate, so the default excludes the first half of the linear part of the record (transient.DEFAULT_KEEP, shared with every other script that fits a rate) and the value of t_min actually used is reported alongside every rate. Where a record is short, as in the amplitude sweep, the fraction retained is the same but the absolute window is shorter. When no sound window exists the fallback taken is printed beneath the table rather than applied silently.
 
 Usage, from the working directory:
 

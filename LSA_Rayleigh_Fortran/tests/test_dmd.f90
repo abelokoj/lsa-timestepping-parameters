@@ -1,6 +1,6 @@
 !> Tests for dmd_mod.
 !>
-!> Synthetic signals with analytically known eigenvalues, so a failure here means the DMD is wrong rather than the CFD being hard.  The last test is the one that matters most: a Rayleigh-Plateau-like signal (a stationary, exponentially growing interface mode buried in decaying contamination) must return the exact dispersion-relation growth rate.
+!> Synthetic signals with analytically known eigenvalues, so a failure here means that the DMD is wrong, not that the problem is hard. The last test is the most important: a Rayleigh-Plateau-like signal (a stationary, exponentially growing interface mode buried in decaying contamination) must return the exact dispersion-relation growth rate.
 program test_dmd
    use testing_mod
    use dmd_mod

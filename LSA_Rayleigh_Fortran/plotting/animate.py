@@ -42,7 +42,7 @@ def write_outputs(anim, stem, outdir, fps, dpi, make_gif=True,
                   make_html=True, html_dpi=None):
     """Write the animation as a GIF and as a self-contained HTML slider.
 
-    The HTML embeds every frame, so it opens from a local file with no server and no network. That matters on a cluster, where the alternative is forwarding a display.
+    The HTML embeds every frame, so it opens from a local file with no server and no network. This is useful on a cluster, since the only other option is to forward a display.
     """
     written = []
     if make_gif:

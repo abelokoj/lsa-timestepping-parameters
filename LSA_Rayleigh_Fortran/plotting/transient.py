@@ -61,7 +61,7 @@ def select_window(times, amplitudes, r0=1.0, bound=LINEAR_BOUND,
                   keep=DEFAULT_KEEP, width=0.8):
     """Fit window bounded on both sides: after the transient, before nonlinearity.
 
-    The upper bound comes from `linear_end`. The lower bound is placed a fixed fraction of the way through the *linear* part of the record rather than of the whole record, which is the distinction that matters: a calculation carried three times further than linearity permits has a fixed fraction of its record sitting deep in the nonlinear regime, and a window defined against the record length lands there.
+    The upper bound comes from `linear_end`. The lower bound is placed a fixed fraction of the way through the *linear* part of the record, not through the whole record, since a calculation carried three times further than linearity permits has a fixed fraction of its record deep in the nonlinear regime, and a window defined against the record length falls there.
 
     The window is returned together with a flag saying whether it is wide enough to fit over. A narrow window is not a failure of this function; it means the perturbation amplitude was too large for the transient to decay before nonlinearity arrived, and the remedy is a smaller amplitude rather than a longer run.
     """
@@ -144,7 +144,7 @@ def local_growth_rate(times, amplitudes, width, n_windows=8):
 def fit_approach(centres, rates):
     """Fit sigma(t) = sigma_inf - A exp(-beta t) to the local rate.
 
-    Returns the three parameters, or None if the fit does not converge, which happens when the record is too short or too noisy to constrain three unknowns. Returning None rather than an unconverged answer matters, because the caller uses this to decide whether a measurement may be quoted.
+    Returns the three parameters, or None if the fit does not converge, which happens when the record is too short or too noisy to constrain three unknowns. None is returned in place of an unconverged answer, because the caller uses this value to decide whether a measurement may be quoted.
     """
     from scipy.optimize import curve_fit
 
@@ -160,7 +160,7 @@ def fit_approach(centres, rates):
     def model(s, sigma_inf, amp, beta):
         return sigma_inf - amp * np.exp(-beta * s)
 
-    # The starting guess matters, and it must allow for either direction of approach. A rate rising to its plateau has its asymptote just above the last estimate and a positive amplitude; a rate falling to it from above has its asymptote just below and a negative amplitude. The earlier guess assumed the rising case only, so an approach from above never converged and was reported as unfittable. The amplitude at the first centre follows from the model at s = 0, sigma = sigma_inf - A, and the decay rate is of order the reciprocal of the record length.
+    # The initial guess must allow for either direction of approach. A rate rising to its plateau has its asymptote just above the last estimate and a positive amplitude; a rate falling to it from above has its asymptote just below and a negative amplitude. The earlier guess assumed the rising case only, so an approach from above never converged and was reported as unfittable. The amplitude at the first centre follows from the model at s = 0, sigma = sigma_inf - A, and the decay rate is of order the reciprocal of the record length.
     # ndarray.ptp was removed in NumPy 2; the free function is the portable spelling.
     span = float(np.ptp(rates))
     direction = 1.0 if rates[-1] >= rates[0] else -1.0

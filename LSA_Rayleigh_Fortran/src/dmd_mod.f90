@@ -255,7 +255,7 @@ contains
 
    !> Largest growth rate among physically retained modes.
    !>
-   !> For Rayleigh-Plateau use stationary_only = .true. (the default): the capillary mode is non-oscillatory, and restricting to it avoids picking up weak spurious oscillatory pairs. A mode counts as stationary when |Im omega| <= max(freq_tol, freq_rel * |Re omega|). The relative part matters with real data: noise gives the physical mode a small imaginary part, and with the former purely absolute test of 1e-6 the mode was discarded, nothing survived, and the routine returned -huge, which went into the tables and the most-unstable-k search while the program still exited 0. When no mode survives the filters the result is now NaN, which callers test with util_mod::is_nan and report as a failure.
+   !> For Rayleigh-Plateau use stationary_only = .true. (the default): the capillary mode is non-oscillatory, and restricting to it avoids picking up weak spurious oscillatory pairs. A mode counts as stationary when |Im omega| <= max(freq_tol, freq_rel * |Re omega|). The relative part is needed for real data: noise gives the physical mode a small imaginary part, and with the former purely absolute test of 1e-6 the mode was discarded, nothing survived, and the routine returned -huge, which went into the tables and the most-unstable-k search while the program still exited 0. When no mode survives the filters the result is now NaN, which callers test with util_mod::is_nan and report as a failure.
    function leading_growth_rate(res, stationary_only, freq_tol, amp_frac, &
                                 freq_rel) result(s)
       type(dmd_result_t), intent(in) :: res

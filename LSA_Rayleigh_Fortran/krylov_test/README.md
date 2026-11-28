@@ -1,6 +1,6 @@
 # krylov_test: the solver's built-in restarting Krylov driver (the restarting variant of Chapter 5)
 
-This folder holds the trial of the restarting procedure of Prof. Sussman's unpublished draft description of the method (steps 1–12), which the solver implements as its built-in LSA driver (`amr.LSA_activate`, `amr.LSA_nsteps_krylov_subspace_method`). Every member restarts from the base state, so the perturbation never grows over a long run. Everything the trial writes stays here, so it can be removed without touching the campaign.
+This folder holds the trial of the restarting procedure that the solver implements as its built-in LSA driver (`amr.LSA_activate`, `amr.LSA_nsteps_krylov_subspace_method`). Every member restarts from the base state, so the perturbation never grows over a long run. Everything the trial writes stays here, so it can be removed without touching the campaign.
 
 | File | Purpose |
 |---|---|
@@ -57,10 +57,5 @@ cd ~/aii_up/NS_fluids_lib && make -j16 USE_LIBLINEAR=TRUE LIBRARY_LOCATIONS=$PWD
 ```bash
 SOLVER_EXE=$(ls -t ~/aii_up/NS_fluids_lib/amr2d*.ex | head -1) sbatch --export=ALL krylov_test/krylov_upstream.sh kup070_16 0.7 16 4.0 20 0.25
 ```
-
-**Points to confirm with Prof. Sussman before reading the numbers:**
-
-1. **Members are rescaled field by field.** Checked in the upstream code (`LSA_normalize_eigenvector`, `fort_LS_evec_max`) at commit d8d9f8b2 of 2026-11-08: each member is rescaled before it is re-added, the level set is set to zero where `|phi|` >= 3 dx and scaled so that its maximum within one cell of the interface is 2 dx, and each velocity component is scaled separately to a maximum of `LSA_velocity_scale`. The factors are not recorded. (The driver at commit dddb827, used for the thesis runs, rescales only the first member.) The companion relation A V = V S holds only for the unscaled sequence. The printed Gram matrix therefore needs the scale factors (`lsa_log_spectrum.py --scales`), and with different factors for the level set and the velocity no single correction is exact.
-2. **The cutoff and the selection rule.** `fort_process_LSA` keeps every positive singular value and selects the largest real part. On a noisy sequence both can pick spurious modes, which `lsa_log_spectrum.py` shows side by side.
 
 **To remove:** `git -C $AII worktree remove --force ~/aii_up`.

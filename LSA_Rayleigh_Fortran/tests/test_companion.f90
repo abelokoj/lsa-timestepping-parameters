@@ -1,4 +1,4 @@
-!> Tests of companion_mod (svd_and_diagonalize): eq. (67) of Prof. Sussman's unpublished draft description of the restarting method solved by SVD, the companion matrix S, and its eigenvalues, on Krylov sequences built from known eigenvalues.
+!> Tests of companion_mod (svd_and_diagonalize): the least-squares equation (B^T W B) a = B^T W vN solved by SVD, the companion matrix S, and its eigenvalues, on Krylov sequences built from known eigenvalues.
 program test_companion
    use testing_mod
    use companion_mod, only: solve_normal_svd, solve_weighted_lstsq, &

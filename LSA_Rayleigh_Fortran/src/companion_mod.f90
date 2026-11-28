@@ -1,4 +1,4 @@
-!> Companion-matrix (Krylov) eigenanalysis of a snapshot sequence, following Section "Equivalency of the above analysis to the least squares approach and a new generalization" of Prof. Sussman's unpublished draft description of the restarting method and Schmid (2010), eqs. (2.5)-(2.8).
+!> Companion-matrix (Krylov) eigenanalysis of a snapshot sequence, following Schmid (2010), eqs. (2.5)-(2.8).
 !>
 !> Given a Krylov sequence v_1, v_2 = A v_1, ..., v_N = A^(N-1) v_1 (each of length M), write B = V_1^(N-1) = [v_1 ... v_(N-1)] (M x (N-1)). The last vector is expanded in the earlier ones, v_N = B a + r, and the coefficients a minimise the weighted residual J(a) = sum_i w_i ((B a)_i - v_(N,i))^2. Setting dJ/da_k = 0 gives the normal equations of the article's eq. (67):
 !>
@@ -18,7 +18,7 @@ module companion_mod
 
 contains
 
-   !> Solve (B^T W B) a = B^T W vN (eq. 67 of Prof. Sussman's unpublished draft description of the restarting method) by the SVD of G = B^T W B.
+   !> Solve (B^T W B) a = B^T W vN by the SVD of G = B^T W B.
    !> B(M, n) holds v_1..v_n with n = N-1; vN(M) is v_N; w(M) are the weights w_i >= 0.
    !> On return: a(n); sv(n) the singular values of G (descending); rank the number kept (sv > rcond * sv(1)); ierr = 0 success, 1 bad sizes, 2 G is zero, 10+info dgesvd failure.
    subroutine solve_normal_svd(B, vN, w, rcond, a, sv, rank, ierr)

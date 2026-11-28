@@ -1,4 +1,4 @@
-!> svd_and_diagonalize: companion-matrix eigenanalysis of a Krylov (or evenly sampled snapshot) sequence, as in Prof. Sussman's unpublished draft description of the restarting method (Section "Equivalency of the above analysis to the least squares approach and a new generalization").
+!> svd_and_diagonalize: companion-matrix eigenanalysis of a Krylov (or evenly sampled snapshot) sequence.
 !>
 !> Steps:
 !>   1. Read the sequence v_1 .. v_N from a lossless export written by `run_lsa export` (perturbation.bin, perturbation.txt, times.txt); for the solver's restarting Krylov driver use `run_lsa export --krylov DIR`.
